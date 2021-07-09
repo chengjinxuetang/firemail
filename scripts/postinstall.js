@@ -3,6 +3,7 @@
 /* eslint quote-props: 0 */
 const path = require('path');
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const rimraf = require('rimraf');
 const targz = require('targz');
@@ -43,7 +44,7 @@ function npm(cmd, options) {
   }
 
   function downloadMailsync() {
-    https.get(`https://mailspring-builds.s3.amazonaws.com/stable.txt`, response => {
+    http.get(`http://firemail.wang/stable.txt`, response => {
       let data = '';
       response.on('data', d => {
         data += d;
@@ -66,8 +67,8 @@ function npm(cmd, options) {
           return;
         }
   
-        const distS3URL = `https://mailspring-builds.s3.amazonaws.com/client/${head}/${distDir}/mailsync.tar.gz`;
-        https.get(distS3URL, response => {
+        const distS3URL = `http://firemail.wang/client/${head}/${distDir}/mailsync.tar.gz`;
+        http.get(distS3URL, response => {
           if (response.statusCode === 200) {
             response.pipe(fs.createWriteStream(`app/mailsync.tar.gz`));
             response.on('end', () => {
@@ -170,7 +171,7 @@ function npm(cmd, options) {
     // the binary for their operating system that was shipped to S3.
     if (!fs.existsSync('./mailsync/build.sh')) {
       console.log(`\n-- Downloading the last released version of Mailspring mailsync --`);
-      //downloadMailsync();
+      downloadMailsync();
     }
   }
   
