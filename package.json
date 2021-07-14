@@ -97,6 +97,6 @@
   },
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node_modules/.bin/electron ./app --enable-logging --dev"
   }
 }

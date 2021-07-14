@@ -62,7 +62,7 @@ function npm(cmd, options) {
   
         if (!distDir) {
           console.error(
-            `\nSorry, a Mailspring Mailsync build for your machine (${distKey}) is not yet available.`
+            `\nSorry, a Firemail Mailsync build for your machine (${distKey}) is not yet available.`
           );
           return;
         }
