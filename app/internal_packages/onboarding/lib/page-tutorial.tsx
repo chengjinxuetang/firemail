@@ -8,7 +8,7 @@ const Steps = [
     title: localized('Compose with context'),
     image: 'feature-people@2x.png',
     description: localized(
-      'Mailspring shows you everything about your contacts right inside your inbox. See LinkedIn profiles, Twitter bios, message history, and more.'
+      'Firemail shows you everything about your contacts right inside your inbox. See LinkedIn profiles, Twitter bios, message history, and more .'
     ),
     x: 96.6,
     y: 1.3,
@@ -21,7 +21,7 @@ const Steps = [
     title: localized('Track opens and clicks'),
     image: 'feature-activity@2x.png',
     description: localized(
-      'With activity tracking, you’ll know as soon as someone reads your message. Sending to a group? Mailspring shows you which recipients opened your email so you can follow up with precision.'
+      'With activity tracking, you’ll know as soon as someone reads your message. Sending to a group? Firemail shows you which recipients opened your email so you can follow up with precision.'
     ),
     x: 12.8,
     y: 1,

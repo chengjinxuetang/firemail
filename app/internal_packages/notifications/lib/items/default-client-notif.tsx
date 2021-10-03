@@ -67,7 +67,7 @@ export default class DefaultClientNotification extends React.Component<
     }
     return (
       <Notification
-        title={localized('Would you like to make Mailspring your default mail client?')}
+        title={localized('Would you like to make Firemail your default mail client?')}
         priority="1"
         icon="volstead-defaultclient.png"
         actions={[

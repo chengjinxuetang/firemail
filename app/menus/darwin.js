@@ -265,10 +265,10 @@ module.exports = {
       id: 'Help',
       label: localized('Help'),
       submenu: [
-        { label: localized('Mailspring Help'), command: 'application:view-help' },
+        { label: localized('Firemail Help'), command: 'application:view-help' },
         { type: 'separator' },
         { label: localized('Getting Started Guide'), command: 'application:view-getting-started' },
-        { label: localized('Mailspring Community'), command: 'application:view-community' },
+        { label: localized('Firemail Community'), command: 'application:view-community' },
       ],
     },
   ],

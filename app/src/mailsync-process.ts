@@ -96,6 +96,7 @@ export class MailsyncProcess extends EventEmitter {
     this.resourcePath = resourcePath;
     this.configDirPath = configDirPath;
     this.binaryPath = path.join(resourcePath, 'mailsync').replace('app.asar', 'app.asar.unpacked');
+    console.log(`---binaryPath: ${this.binaryPath} `);
   }
 
   _showStatusWindow(mode) {
@@ -139,6 +140,7 @@ export class MailsyncProcess extends EventEmitter {
       CONFIG_DIR_PATH: this.configDirPath,
       IDENTITY_SERVER: 'unknown',
     };
+    console.log(`---process.type: ${process.type} `); // browser
     if (process.type === 'renderer') {
       const rootURLForServer = require('./flux/mailspring-api-request').rootURLForServer;
       env.IDENTITY_SERVER = rootURLForServer('identity');
@@ -150,7 +152,10 @@ export class MailsyncProcess extends EventEmitter {
     }
     if (this.account) {
       args.push('--info', this.account.emailAddress);
+      //console.log(` this.account:`, JSON.stringify(this.account))
+      args.push('--account', JSON.stringify(this.account));
     }
+    console.log(`---cmd: ${this.binaryPath} ${args} ${JSON.stringify(env)}`);
     this._proc = spawn(this.binaryPath, args, { env });
 
     /* Allow us to buffer up to 1MB on stdin instead of 16k. This is necessary
@@ -180,29 +185,36 @@ export class MailsyncProcess extends EventEmitter {
       let buffer = Buffer.from([]);
 
       if (this._proc.stdout) {
+        //console.log(`---_proc.stdout`);
         this._proc.stdout.on('data', data => {
+          console.log(`---_proc.stdout data: ${JSON.stringify(data)}`);
           buffer += data;
           if (onData) onData(data);
         });
       }
       if (this._proc.stderr) {
+        //console.log(`---_proc.stderr`);
         this._proc.stderr.on('data', data => {
+          console.log(`---_proc.stderr data: ${JSON.stringify(data)}`);
           buffer += data;
           if (onData) onData(data);
         });
       }
 
       this._proc.on('error', err => {
+        console.log(`---_proc.on error err: ${JSON.stringify(err)}`);
         reject(err);
       });
 
       this._proc.on('close', code => {
+        console.log(`---_proc.on close code: ${JSON.stringify(code)}`);
         const stripSecrets = text => {
-          const settings = (this.account && this.account.settings) || {
-            refresh_token: undefined,
-            imap_password: undefined,
-            smtp_password: undefined,
-          };
+          // const settings = (this.account && this.account.settings) || {
+          //   refresh_token: undefined,
+          //   imap_password: undefined,
+          //   smtp_password: undefined,
+          // };
+          const settings = (this.account && this.account.settings);
           const { refresh_token, imap_password, smtp_password } = settings;
 
           const escape = string => string.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -213,11 +225,19 @@ export class MailsyncProcess extends EventEmitter {
         };
 
         try {
+          console.log(`---buffer: ${JSON.stringify(buffer)}`);
           const lastLine = buffer
             .toString('utf-8')
             .split('\n')
             .pop();
-          const response = JSON.parse(lastLine);
+            console.log(`---lastLine: ${JSON.stringify(lastLine)}`);
+          let response = JSON.parse("{}");
+          if(lastLine.length > 0 && lastLine != "Running Setup")
+          {
+            response = JSON.parse(lastLine);
+          }
+        
+          console.log(`---response: ${JSON.stringify(response)}`);
           if (code === 0) {
             resolve({ response, buffer });
           } else {
@@ -230,6 +250,7 @@ export class MailsyncProcess extends EventEmitter {
             reject(error);
           }
         } catch (err) {
+          console.log(`---_spawnAndWait err: ${JSON.stringify(err)}`);
           const error = new Error(
             `${localized(`An unknown error has occurred`)} (mailsync: ${code})`
           );
@@ -345,9 +366,10 @@ export class MailsyncProcess extends EventEmitter {
           if (str.includes('running vacuum')) this._showStatusWindow('vacuum');
         },
       });
-      console.log(buffer.toString());
+      console.log(` async migratec try buffer:${buffer.toString()}`);
       this._closeStatusWindow();
     } catch (err) {
+      //console.log(` async migratec catch err:${JSON.stringify(err)}`);
       this._closeStatusWindow();
       throw err;
     }

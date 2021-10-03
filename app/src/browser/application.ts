@@ -72,6 +72,7 @@ export default class Application extends EventEmitter {
 
     try {
       const mailsync = new MailsyncProcess(options);
+      console.log(`---options: ${JSON.stringify(options)} `);
       await mailsync.migrate();
     } catch (err) {
       let message = null;
@@ -406,17 +407,17 @@ export default class Application extends EventEmitter {
     });
 
     this.on('application:view-help', () => {
-      const helpUrl = 'https://community.firemail.wang/docs';
+      const helpUrl = 'http://chengjinxuetang.com:8080/forum';
       shell.openExternal(helpUrl);
     });
 
     this.on('application:view-getting-started', () => {
-      const helpUrl = 'https://community.firemail.wang/pub/quick-start-guide';
+      const helpUrl = 'http://chengjinxuetang.com:8080/forum';
       shell.openExternal(helpUrl);
     });
 
     this.on('application:view-community', () => {
-      const helpUrl = 'https://community.firemail.wang/';
+      const helpUrl = 'http://chengjinxuetang.com:8080/forum';
       shell.openExternal(helpUrl);
     });
 

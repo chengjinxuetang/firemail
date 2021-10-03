@@ -46,3 +46,11 @@ win10 x64  | 30ef802f |   win-ia32   |   win               | ia32
 
 下载官方的压缩包
 https://mailspring-builds.s3.amazonaws.com/client/30ef802f/win-ia32/mailsync.tar.gz
+
+
+应用程序目录：
+%appdata%\Firemail-dev
+%appdata%\Firemail
+
+程序运行效果:
+![firemail](https://github.com/chengjinxuetang/firemail/blob/main/screenshot/firemail.gif)

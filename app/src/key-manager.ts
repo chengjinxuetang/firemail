@@ -42,7 +42,7 @@ class KeyManager {
       this._reportFatalError(err);
     }
     const next = account.clone();
-    delete next.settings.imap_password;
+    //delete next.settings.imap_password;
     delete next.settings.smtp_password;
     delete next.settings.refresh_token;
     return next;
@@ -108,7 +108,7 @@ class KeyManager {
       type: 'error',
       buttons: [localized('Quit')],
       message: localized(
-        `Mailspring could not store your password securely. %@ For more information, visit %@`,
+        `Firemail could not store your password securely. %@ For more information, visit %@`,
         more,
         'http://support.firemail.wang/hc/en-us/articles/115001875571'
       ),

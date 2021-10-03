@@ -39,13 +39,14 @@ class CrashTracker {
   _tooManyFailures = {};
 
   forgetCrashes(fullAccountJSON) {
+    console.log(`forgetCrashes fullAccountJSON:`,  JSON.stringify(fullAccountJSON))
     const key = this._keyFor(fullAccountJSON);
     delete this._timestamps[key];
     delete this._tooManyFailures[key];
   }
 
   recordClientCrash(fullAccountJSON, crash: MailsyncProcessExit) {
-    console.log(`Sync worker exited.`, crash);
+    console.log(`Sync worker exited.`, JSON.stringify(crash));
 
     this._appendCrashToHistory(fullAccountJSON);
 
@@ -53,10 +54,12 @@ class CrashTracker {
   }
 
   _keyFor({ id, settings }) {
+    //console.log(` _keyFor`, JSON.stringify({ id, settings }));
     return JSON.stringify({ id, settings });
   }
 
   _appendCrashToHistory(fullAccountJSON) {
+    //console.log(`_appendCrashToHistory fullAccountJSON:`,  JSON.stringify(fullAccountJSON))
     const key = this._keyFor(fullAccountJSON);
     this._timestamps[key] = this._timestamps[key] || [];
     if (this._timestamps[key].unshift(Date.now()) > MAX_CRASH_HISTORY) {
@@ -74,6 +77,7 @@ class CrashTracker {
   }
 
   tooManyFailures(fullAccountJSON) {
+    //console.log(`tooManyFailures fullAccountJSON:`,  JSON.stringify(fullAccountJSON))
     const key = this._keyFor(fullAccountJSON);
     return this._tooManyFailures[key];
   }
@@ -472,6 +476,7 @@ export default class MailsyncBridge {
 
   _onFetchBodies(messages) {
     const byAccountId = {};
+    //console.log("_onFetchBodies _______")
     for (const msg of messages) {
       byAccountId[msg.accountId] = byAccountId[msg.accountId] || [];
       byAccountId[msg.accountId].push(msg.id);
